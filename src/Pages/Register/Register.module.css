@@ -1,0 +1,25 @@
+/* 
+pages:
+MainLayout ..
+Home..
+Cart..
+Products..
+Categories..
+ProductDetails..
+Login..
+Register..
+NotFound..
+
+components:
+Navbar..
+Footer..
+MainSlider..
+CategorySlider..
+npx generate-react-cli component NotFound --type=page
+npx generate-react-cli component CategorySlider 
+
+
+npm install -D tailwindcss@3
+npx tailwindcss init
+
+*/

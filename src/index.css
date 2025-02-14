@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.active{
+  border-bottom:1px solid #000 !important;
+  
+}
+/* .row{
+  @apply .flex .flex-wrap
+} */
+
+/*
+npm list tailwindcss
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+*/
