@@ -13,7 +13,6 @@ export default function Login() {
   const[ isLoading , setIsLoading ]= useState(false);
   const navigate = useNavigate();
   const {settoken} =useContext(tokenContext)
-console.log(navigate);
 
 const initialValues ={
   email:'',
@@ -21,22 +20,19 @@ const initialValues ={
 
 }
 async function handleLogin(data) {
-  //call Api (axios)
-  //https://ecommerce.routemisr.com/api/v1/auth/signup
+  
   setIsLoading(true)
-  console.log(data);
   await axios.post('https://ecommerce.routemisr.com/api/v1/auth/signin' , data)
    .then((response)=>{
-    console.log(response);
-    //set context
+    
     settoken(response.data.token)
-    //set localStorage
+   
     localStorage.setItem('token',response.data.token)
     setErrorMsg(null);
     setIsLoading(false);
     
     
-    // navigate('/');
+   
     
 }).catch((error)=>{setErrorMsg(error.response.data.message)
   setIsLoading(false)
@@ -47,7 +43,6 @@ async function handleLogin(data) {
  
  const validationSchema = Yup.object({
   email:Yup.string().required(),
-  // password:Yup.string().required().matches('/^[A-Za-z1-9]{8,12}$/','Password is Not Valid'),
   password:Yup.string().required(),
 
  });
@@ -57,13 +52,12 @@ const formik = useFormik({
   validationSchema,
   onSubmit:handleLogin,
 });
-console.log(formik);
 
 
 
   return (
   <>
-<section className="w-1/2 mx-auto bg-gray-50 shadow p-3 dark:bg-gray-900 my-3">
+<section className="w-full mx-auto bg-gray-50 shadow p-3 dark:bg-gray-900 my-3 ">
   <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
 
     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -82,10 +76,10 @@ console.log(formik);
              value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" />
+            type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="name@company.com" />
           </div>
           {formik.touched.email  && formik.errors.email&&(
-          <small className="text-red-600 ">{formik.errors.email}</small>
+          <small className="w-full pl-2 pr-60 py-2 text-red-500  bg-red-300 border rounded-md border-red-500  ">{formik.errors.email}</small>
           )}
           <div>
             <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">password:</label>
@@ -95,20 +89,24 @@ console.log(formik);
               onChange={formik.handleChange} type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  />
           </div>
           {formik.errors.password&&formik.touched.password && (
-          <small className="text-red-600 ">{formik.errors.password }</small>
+          <small className="w-full pl-2 pr-60 py-2 text-red-500  bg-red-300 border rounded-md border-red-500  ">{formik.errors.password }</small>
           )}
     
   
     {isLoading? (
        <button disabled
-       className="text-white disabled:bg-blue-200 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Loading...
+       className="text-white disabled:bg-blue-200 bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">Loading...
       </button>
     ):
       <button disabled={!formik.isValid}
-      type="submit" className="text-white  disabled:bg-blue-200 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+      type="submit" className="btn">
         Login
       </button>} 
-          <small>Create New Account<Link to={'/Register'}>Register</Link></small>
+      <div className="flex flex-row justify-between">
+        <Link  className=" hover:text-lime-500">forget your password?</Link>
+      <small className="font-sans">Create New Account<Link className="mx-1 font-bold" to={'/Register'}>Register</Link></small>
+      </div>
+        
         </form>
       </div>
     </div>
