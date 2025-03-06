@@ -7,49 +7,90 @@ import { useParams } from "react-router-dom";
 import { CartContext } from "../../Context/CartContext";
 import toast from "react-hot-toast";
 import { WishListContext } from "../../Context/WishListContext";
+import Slider from "react-slick";
 
 export default function ProductDetails() {
 
 const {productId} = useParams();
-console.log({productId});
+const [liked, setLiked] = useState(false);
+const{addToCart,setNumOfCartItems,setCartId} = useContext(CartContext);
+const {addToWishlist}= useContext(WishListContext);
+ const [ProductDetail ,setProductDetails] = useState([]);
 
-const{addToCart} = useContext(CartContext);
-const {addToWishList}= useContext(WishListContext);
-const [ProductDetail ,setProductDetails] = useState([]);
-
-
+ const  settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  arrows:false,
+  autoplaySpeed:1000,
+  autoplay:true,
+  responsive: [
+    {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 2,
+        initialSlide: 1
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+};
 
   
 async function addProduct(id) {
-let res = await addToCart(id)
-console.log(res);
+let response = await addToCart(id)
 
-if (res.status==='success') {
-  toast.success(res.message)
+if (response.status==='success') {
+  toast.success(response.message)
+  setNumOfCartItems(response.numOfCartItems);
+setCartId(response.cartId);
 }else{
   toast.error('Something Wrong')
 }
 
 }
 
-const [liked, setLiked] = useState(false);
+
 
 const handleClick = () => {
   setLiked(!liked);
 };
-
-
- async function added(id) {
-  const add =await addToWishList(id)
-  if (add.status==='success') {
-    toast.success('it has been successfully added❤️')
-  }else{
-    toast.error('Something Wrong')
-  }
-}
-
-//حلجه الي راجعه من context اعملها كوبري دايما async , await
-
+  async function handleLike(id) {
+    let add = await  addToWishlist(id)
+    if (add.status==='success') {
+      toast.success('it has been successfully added❤️')
+    }else{
+      toast.error('Something Wrong')
+    }
+    }
+   
  async function getProductDetails() {
 await axios.get(`https://ecommerce.routemisr.com/api/v1/products/${productId}`)
   .then((response)=>setProductDetails(response.data.data))
@@ -60,20 +101,19 @@ await axios.get(`https://ecommerce.routemisr.com/api/v1/products/${productId}`)
     
   },[]);
   
-//   useEffect(()=>{
-    
-//     document.title = ProductDetail.title
-//   },[ProductDetail])
   return (
     <div className="container">
   <div className="row my-14 items-center">
           <Helmet>
                 <title>{ProductDetail.title}</title>
             </Helmet>
-        <div className="w-1/4 ">
-        <img src={ProductDetail.imageCover} alt={ProductDetail.name} />
+        <div className="w-full md:w-1/4 ">
+        <Slider {...settings}>
+          {ProductDetail.images?.map((img,i)=>(<img src={img} key={i} />))}
+        </Slider>
+        
         </div>
-        <div className="w-3/4 p-4">
+        <div className="w-full  md:w-3/4 px-4">
         <div className="inner">
             <h2 className="text-2xl text-[#212529] font-bold font-[system-ui] ">{ProductDetail.title}</h2>
             <p className="text-gray-700 text-md my-4">{ProductDetail.description}</p>
@@ -89,8 +129,8 @@ await axios.get(`https://ecommerce.routemisr.com/api/v1/products/${productId}`)
             </div>
             <div className="row text-center justify-between items-baseline ">
             <div className="btn2 w-3/4 " onClick={()=>{addProduct(ProductDetail.id)}} >+Add To Cart</div>
-            <div onClick={()=>{added(ProductDetail.id)}} >
-              <div onClick={handleClick} className={` text-[#1F513B] text-3xl transition-colors duration-200 ${liked ? 'text-red-500' : ''}`}>
+            <div onClick={()=>{handleLike(ProductDetail.id)}} >
+              <div onClick={()=>handleClick(ProductDetail.id)}  className={` text-[#1F513B] text-3xl transition-colors duration-200 ${liked ? 'text-red-500' : ''}`}>
               <FaHeart />
               </div>
               </div>     
