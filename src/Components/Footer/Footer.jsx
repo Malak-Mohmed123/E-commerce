@@ -1,14 +1,14 @@
-import logo from './../../assets/react.svg'
+import { GiShoppingCart } from 'react-icons/gi'
 
 export default function Footer() {
   return (
 
-<footer className="bg-slate-100 dark:bg-gray-900  bottom-0 left-0 right-0">
+<footer className="bg-green-100 dark:bg-gray-900  bottom-0 left-0 right-0">
   <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
     <div className="md:flex md:justify-between">
       <div className="mb-6 md:mb-0">
         <a href="https://flowbite.com/" className="flex items-center">
-          <img src={logo} className="h-8 me-3" alt="FlowBite Logo" />
+                <GiShoppingCart className="w-10 h-10 text-green-600" />
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
         </a>
       </div>
