@@ -61,7 +61,6 @@ export default function CategorySlider() {
     <Slider {...settings}>
     {category.map((category)=>(
           <div key={category._id}>
-            {console.log(category)}
             <img className="w-full h-[300px]" src={category.image} alt={category.name}/>
           <h4 className="m-3 font-semibold ">{category.name}</h4>
         </div>
@@ -73,4 +72,3 @@ export default function CategorySlider() {
   </>
   )
 }
-//https://ecommerce.routemisr.com/api/v1/categories
